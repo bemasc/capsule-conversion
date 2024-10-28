@@ -9,11 +9,11 @@ number:
 date:
 consensus: true
 v: 3
-area: WIT
-workgroup: HTTPBIS
+# area: WIT
+# workgroup: HTTPBIS
 keyword:
 venue:
-  github: bemasc/capsule-conversion
+  github: "bemasc/capsule-conversion"
 
 author:
  -
