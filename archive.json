@@ -1,0 +1,107 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-10-29T01:41:32.233124+00:00",
+  "repo": "bemasc/capsule-conversion",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDONFykoM6ALEGK",
+      "title": "do not require protocol fallback",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/1",
+      "state": "OPEN",
+      "author": "kazuho",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I do not recall us mandating H2 or H3 servers fall back to HTTP/1.1 for ordinary requests. Removal of the requirement aligns handling of CPUT to that precedence.",
+      "createdAt": "2024-10-29T00:32:31Z",
+      "updatedAt": "2024-10-29T00:32:31Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "6b5ffb7292887fa3152850dd7fe07ae64869aee3",
+      "headRepository": "kazuho/capsule-conversion",
+      "headRefName": "kazuho/first-read",
+      "headRefOid": "faa424e82c96c4cd2728fe9d33a558bce0c5f92e",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 2,
+      "id": "PR_kwDONFykoM6ALEn6",
+      "title": "add kazuho",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/2",
+      "state": "OPEN",
+      "author": "kazuho",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2024-10-29T00:35:13Z",
+      "updatedAt": "2024-10-29T00:35:14Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "6b5ffb7292887fa3152850dd7fe07ae64869aee3",
+      "headRepository": "kazuho/capsule-conversion",
+      "headRefName": "kazuho/add-kazuho",
+      "headRefOid": "406b3767b31ce24db3685b0e0fdc0afdc5e012d2",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
