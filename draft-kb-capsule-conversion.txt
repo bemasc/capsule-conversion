@@ -4,8 +4,9 @@
 
 Network Working Group                                     B. M. Schwartz
 Internet-Draft                                      Meta Platforms, Inc.
-Intended status: Standards Track                         28 October 2024
-Expires: 1 May 2025
+Intended status: Standards Track                        奥 一穂 (K. Oku)
+Expires: 2 May 2025                                               Fastly
+                                                         29 October 2024
 
 
             HTTP Version Translation of the Capsule Protocol
@@ -41,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 May 2025.
+   This Internet-Draft will expire on 2 May 2025.
 
 Copyright Notice
 
@@ -74,7 +75,7 @@ Table of Contents
      7.1.  Normative References
      7.2.  Informative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -322,8 +323,18 @@ Acknowledgments
 
    TODO acknowledge.
 
-Author's Address
+Authors' Addresses
 
    Benjamin M. Schwartz
    Meta Platforms, Inc.
    Email: ietf@bemasc.net
+
+
+   Kazuho Oku
+   Fastly
+   Email: kazuhooku@gmail.com
+
+   Additional contact information:
+
+      奥 一穂
+      Fastly
