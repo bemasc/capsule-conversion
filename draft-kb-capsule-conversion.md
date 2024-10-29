@@ -20,6 +20,12 @@ author:
     fullname: Benjamin M. Schwartz
     organization: Meta Platforms, Inc.
     email: ietf@bemasc.net
+ -
+    fullname:
+      :: 奥 一穂
+      ascii: Kazuho Oku
+    org: Fastly
+    email: kazuhooku@gmail.com
 
 normative:
 
