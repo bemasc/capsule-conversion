@@ -111,8 +111,6 @@ An HTTP intermediary MAY translate a Convertible Extended CONNECT Request betwee
 
 When translating between HTTP versions, HTTP intermediaries often need to forward requests to servers that do not support all possible HTTP versions.  This can be accomplished by explicit configuration, by a fallback mechanism, or in some other way.
 
-An HTTP intermediary implementing this specification MUST account for backend servers that support HTTP/2 or HTTP/3, but do not implement Extended CONNECT.  When the backend server does not support Extended CONNECT, the intermediary MUST forward the request over HTTP/1.1.
-
 # Implications
 
 Translation of unrecognized CPUTs across HTTP versions carries some implications for future specifications related to the Capsule Protocol:
