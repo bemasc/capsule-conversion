@@ -64,9 +64,11 @@ This draft specifies general rules for translating Capsule Protocol requests acr
 
 # Requirements
 
+## Requirements for Intermediaries
+
 This section describes requirements on HTTP intermediaries that change the HTTP version of a Capsule Protocol request.
 
-## Converting an HTTP/1.1 Upgrade request to Extended CONNECT
+### Converting an HTTP/1.1 Upgrade request to Extended CONNECT
 
 A Convertible Upgrade Request is a request that meets these criteria:
 
@@ -93,7 +95,7 @@ After sending this response, the intermediary MUST process all data to and from 
 
 If the intermediary receives any other valid response, it MUST NOT convert it to an HTTP/1.1 Upgrade response, and MUST forward it using ordinary HTTP version translation.  If the response status was not 1xx (Informational), the intermediary MAY accept additional HTTP/1.1 requests on this connection to the client.
 
-## Converting an Extended CONNECT request to HTTP/1.1 Upgrade
+### Converting an Extended CONNECT request to HTTP/1.1 Upgrade
 
 A Convertible Extended CONNECT request is a request that meets these criteria:
 
@@ -109,15 +111,15 @@ Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary MAY 
 
 If the intermediary receives a correctly formed "101 (Switching Protocols)" response, it MUST change the response code to "200 (OK)".  If it receives a 2xx (Successful) response, it SHOULD return a "501 (Not Implemented)" status code, to indicate that the ":protocol" value was not accepted ({{!RFC9220, Section 3}}). Otherwise, it MUST forward any valid responses unmodified.  After sending a "200" response, the intermediary MUST process all further data to and from the server in accordance with the Capsule Protocol.
 
-## Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version
+### Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version
 
 An HTTP intermediary MAY translate a Convertible Extended CONNECT Request between different HTTP versions using ordinary HTTP version translation.
 
-## Adjusting for Server Capabilities
+## Requirements for Origin Servers
 
-When translating between HTTP versions, HTTP intermediaries often need to forward requests to servers that do not support all possible HTTP versions.  This can be accomplished by explicit configuration, by a fallback mechanism, or in some other way.
+In general, an origin server that supports multiple HTTP versions cannot predict which version will be used by an intermediary.  Unless otherwise constrained, the intermediary is free to use any HTTP version supported by the Origin Server, regardless of the HTTP version over which the intermediary received the request.  As a result, origin servers that intend to present a coherent view of their content must offer the same content on all supported HTTP versions.
 
-An HTTP intermediary implementing this specification MUST account for backend servers that support HTTP/2 or HTTP/3, but do not implement Extended CONNECT.  When the backend server does not support Extended CONNECT, the intermediary MUST forward the request over HTTP/1.1.
+When an intermediary supports this specification, the same rule applies to Capsule Protocol endpoints.  If an origin server intends to present a coherent view of its Capsule Protocol endpoints, and an intermediary that supports this specification might be in use, the origin server MUST offer the same endpoints across all supported HTTP versions.  Accordingly, the origin server MUST enable Extended CONNECT if it supports HTTP/2 or HTTP/3.
 
 # Implications
 
