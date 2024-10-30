@@ -113,12 +113,6 @@ If the intermediary receives a correctly formed "101 (Switching Protocols)" resp
 
 An HTTP intermediary MAY translate a Convertible Extended CONNECT Request between different HTTP versions using ordinary HTTP version translation.
 
-## Adjusting for Server Capabilities
-
-When translating between HTTP versions, HTTP intermediaries often need to forward requests to servers that do not support all possible HTTP versions.  This can be accomplished by explicit configuration, by a fallback mechanism, or in some other way.
-
-An HTTP intermediary implementing this specification MUST account for backend servers that support HTTP/2 or HTTP/3, but do not implement Extended CONNECT.  When the backend server does not support Extended CONNECT, the intermediary MUST forward the request over HTTP/1.1.
-
 # Implications
 
 Translation of unrecognized CPUTs across HTTP versions carries some implications for future specifications related to the Capsule Protocol:
@@ -127,6 +121,7 @@ Translation of unrecognized CPUTs across HTTP versions carries some implications
 * The "Capsule-Protocol" response header has no effect and should be treated as a hint for later analysis.  Intermediaries can process the response as the Capsule Protocol based entirely on the request header and the response status code.
 * Intermediaries' behavior regarding each capsule type is independent of the CPUT.  CPUTs cannot change intermediaries' treatment of existing capsule types.
 * A Capsule Type or CPUT cannot change the meaning of an HTTP extension.  It can only rely on the behaviors that are defined as mandatory for any implementation of that extension.  Extensions intended for use with the Capsule Protocol will likely need to define how HTTP version translation works.
+* Capsule Protocol endpoints are defined independently of the HTTP version, like ordinary HTTP resources.  If an origin server's Capsule Protocol support varies between HTTP versions, clients may observe inconsistent behavior when accessing the origin through a compliant intermediary.
 
 All existing CPUTs and Capsule Types already conform to these rules.
 
