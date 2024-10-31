@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-29T01:41:32.233124+00:00",
+  "timestamp": "2024-10-31T01:41:27.494442+00:00",
   "repo": "bemasc/capsule-conversion",
   "labels": [
     {
@@ -58,12 +58,12 @@
       "url": "https://github.com/bemasc/capsule-conversion/pull/1",
       "state": "OPEN",
       "author": "kazuho",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I do not recall us mandating H2 or H3 servers fall back to HTTP/1.1 for ordinary requests. Removal of the requirement aligns handling of CPUT to that precedence.",
       "createdAt": "2024-10-29T00:32:31Z",
-      "updatedAt": "2024-10-29T00:32:31Z",
+      "updatedAt": "2024-10-29T21:19:33Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "6b5ffb7292887fa3152850dd7fe07ae64869aee3",
@@ -74,7 +74,15 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "body": "EDIT: Proposed alternative: #3.\r\n\r\nThe principle I'm trying to uphold is: \"adding capabilities to the backend server can't break the overall system\".  The current landscape of HTTP versions complies with this principle.  If my backend server only supports HTTP/X, and I later decide to add HTTP/Y, I can be confident that nothing will stop working.\r\n\r\nNow suppose, in this specification, that I operate an HTTP/1.1 backend, and Capsule Protocol requests are working well.  Then I decide to activate HTTP/2 support for this backend.  If Extended CONNECT is not enabled on my backend server, Capsule Protocol requests will start failing (if the intermediary prefers HTTP/2).\r\n\r\nTo avoid this failure mode, the intermediary needs to distinguish \"HTTP/2\" from \"HTTP/2 with Extended CONNECT\", and only use the latter for the Capsule Protocol.  This doesn't need to be accomplished via \"fallback\".  It could be a manual configuration step by the customer.\r\n\r\nThe main alternative I see would be to say that any backend server relying on unrecognized CPUT conversion MUST offer Extended CONNECT on H2 and H3.  If you think that's a better approach, I'm happy to change this text.",
+          "createdAt": "2024-10-29T13:08:52Z",
+          "updatedAt": "2024-10-29T21:19:33Z"
+        }
+      ],
       "reviews": []
     },
     {
@@ -82,26 +90,157 @@
       "id": "PR_kwDONFykoM6ALEn6",
       "title": "add kazuho",
       "url": "https://github.com/bemasc/capsule-conversion/pull/2",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "kazuho",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2024-10-29T00:35:13Z",
-      "updatedAt": "2024-10-29T00:35:14Z",
+      "updatedAt": "2024-10-29T12:51:21Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "6b5ffb7292887fa3152850dd7fe07ae64869aee3",
       "headRepository": "kazuho/capsule-conversion",
       "headRefName": "kazuho/add-kazuho",
       "headRefOid": "406b3767b31ce24db3685b0e0fdc0afdc5e012d2",
+      "closedAt": "2024-10-29T12:51:21Z",
+      "mergedAt": "2024-10-29T12:51:21Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "c50994dfb9edb0fe3a35e76009b5e252c9ff5426"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONFykoM6PKA6s",
+          "commit": {
+            "abbreviatedOid": "406b376"
+          },
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-10-29T12:51:16Z",
+          "updatedAt": "2024-10-29T12:51:16Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDONFykoM6ATBfj",
+      "title": "Move Extended CONNECT requirement to origin servers",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/3",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Alternative to #2",
+      "createdAt": "2024-10-29T21:02:10Z",
+      "updatedAt": "2024-10-30T13:16:38Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "c50994dfb9edb0fe3a35e76009b5e252c9ff5426",
+      "headRepository": "bemasc/capsule-conversion",
+      "headRefName": "bemasc-ext-connect",
+      "headRefOid": "06db8d14058bb28ee01a202dde011b026d61fbaa",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "body": "@kazuho Please review",
+          "createdAt": "2024-10-29T21:19:04Z",
+          "updatedAt": "2024-10-29T21:19:04Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "PRR_kwDONFykoM6PTdsc",
+          "commit": {
+            "abbreviatedOid": "06db8d1"
+          },
+          "author": "kazuho",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-30T10:03:55Z",
+          "updatedAt": "2024-10-30T10:03:55Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "While the preceding paragraph might be true, I'm not sure if RFC 9110 has something equivalent to the MUSTs in this paragraph.\r\n\r\nMy gut feeling is that our requirements for cross-version behavior should be identical to that of ordinary HTTP, because extended connect runs on top of HTTP.\r\n\r\nAll I know is that [RFC 9110 Section 6.2](https://www.rfc-editor.org/rfc/rfc9110.html#name-control-data) provides recommendations (but not requirements) for how the clients select versions, while it is almost silent regarding the requirements for servers.\r\n\r\nCould we just point to that section and call it a day?",
+              "createdAt": "2024-10-30T10:03:55Z",
+              "updatedAt": "2024-10-30T10:03:55Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONFykoM6PV0OM",
+          "commit": {
+            "abbreviatedOid": "06db8d1"
+          },
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-10-30T13:16:38Z",
+          "updatedAt": "2024-10-30T13:16:38Z",
+          "comments": [
+            {
+              "originalPosition": 38,
+              "body": "In my view, the \"HTTP/2 without Extended CONNECT\" situation is a real mess that should be highlighted somehow.\r\n\r\nI've tried a different approach in #4.  Please review.",
+              "createdAt": "2024-10-30T13:16:38Z",
+              "updatedAt": "2024-10-30T13:16:38Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDONFykoM6AYkfa",
+      "title": "Move discussion of partially broken origins to the Implications",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/4",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "Alternative to #2, #3",
+      "createdAt": "2024-10-30T13:15:06Z",
+      "updatedAt": "2024-10-31T01:10:24Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "c50994dfb9edb0fe3a35e76009b5e252c9ff5426",
+      "headRepository": "bemasc/capsule-conversion",
+      "headRefName": "bemasc-remove-ext-conect",
+      "headRefOid": "3b1fce0d85cfc0e97ef3c90cd80a15d40ae9b87f",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDONFykoM6Pc_Gb",
+          "commit": {
+            "abbreviatedOid": "3b1fce0"
+          },
+          "author": "kazuho",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "Thank you very much!\r\n\r\nLooks good. We can come back to this if necessary, after the draft gets adopted.",
+          "createdAt": "2024-10-31T01:10:24Z",
+          "updatedAt": "2024-10-31T01:10:24Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
