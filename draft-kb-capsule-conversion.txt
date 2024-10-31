@@ -5,8 +5,8 @@
 Network Working Group                                     B. M. Schwartz
 Internet-Draft                                      Meta Platforms, Inc.
 Intended status: Standards Track                        奥 一穂 (K. Oku)
-Expires: 2 May 2025                                               Fastly
-                                                         29 October 2024
+Expires: 4 May 2025                                               Fastly
+                                                         31 October 2024
 
 
             HTTP Version Translation of the Capsule Protocol
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 May 2025.
+   This Internet-Draft will expire on 4 May 2025.
 
 Copyright Notice
 
@@ -67,7 +67,6 @@ Table of Contents
      3.2.  Converting an Extended CONNECT request to HTTP/1.1 Upgrade
      3.3.  Converting an Extended CONNECT request to Extended CONNECT
            for a different HTTP version
-     3.4.  Adjusting for Server Capabilities
    4.  Implications
    5.  Security Considerations
    6.  IANA Considerations
@@ -225,18 +224,6 @@ Table of Contents
    Request between different HTTP versions using ordinary HTTP version
    translation.
 
-3.4.  Adjusting for Server Capabilities
-
-   When translating between HTTP versions, HTTP intermediaries often
-   need to forward requests to servers that do not support all possible
-   HTTP versions.  This can be accomplished by explicit configuration,
-   by a fallback mechanism, or in some other way.
-
-   An HTTP intermediary implementing this specification MUST account for
-   backend servers that support HTTP/2 or HTTP/3, but do not implement
-   Extended CONNECT.  When the backend server does not support Extended
-   CONNECT, the intermediary MUST forward the request over HTTP/1.1.
-
 4.  Implications
 
    Translation of unrecognized CPUTs across HTTP versions carries some
@@ -260,6 +247,12 @@ Table of Contents
       mandatory for any implementation of that extension.  Extensions
       intended for use with the Capsule Protocol will likely need to
       define how HTTP version translation works.
+
+   *  Capsule Protocol endpoints are defined independently of the HTTP
+      version, like ordinary HTTP resources.  If an origin server's
+      Capsule Protocol support varies between HTTP versions, clients may
+      observe inconsistent behavior when accessing the origin through a
+      compliant intermediary.
 
    All existing CPUTs and Capsule Types already conform to these rules.
 
