@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-31T01:41:27.494442+00:00",
+  "timestamp": "2024-11-03T01:45:33.952231+00:00",
   "repo": "bemasc/capsule-conversion",
   "labels": [
     {
@@ -56,21 +56,21 @@
       "id": "PR_kwDONFykoM6ALEGK",
       "title": "do not require protocol fallback",
       "url": "https://github.com/bemasc/capsule-conversion/pull/1",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "kazuho",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "I do not recall us mandating H2 or H3 servers fall back to HTTP/1.1 for ordinary requests. Removal of the requirement aligns handling of CPUT to that precedence.",
       "createdAt": "2024-10-29T00:32:31Z",
-      "updatedAt": "2024-10-29T21:19:33Z",
+      "updatedAt": "2024-10-31T02:09:19Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "6b5ffb7292887fa3152850dd7fe07ae64869aee3",
       "headRepository": "kazuho/capsule-conversion",
       "headRefName": "kazuho/first-read",
       "headRefOid": "faa424e82c96c4cd2728fe9d33a558bce0c5f92e",
-      "closedAt": null,
+      "closedAt": "2024-10-31T02:09:19Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -81,6 +81,13 @@
           "body": "EDIT: Proposed alternative: #3.\r\n\r\nThe principle I'm trying to uphold is: \"adding capabilities to the backend server can't break the overall system\".  The current landscape of HTTP versions complies with this principle.  If my backend server only supports HTTP/X, and I later decide to add HTTP/Y, I can be confident that nothing will stop working.\r\n\r\nNow suppose, in this specification, that I operate an HTTP/1.1 backend, and Capsule Protocol requests are working well.  Then I decide to activate HTTP/2 support for this backend.  If Extended CONNECT is not enabled on my backend server, Capsule Protocol requests will start failing (if the intermediary prefers HTTP/2).\r\n\r\nTo avoid this failure mode, the intermediary needs to distinguish \"HTTP/2\" from \"HTTP/2 with Extended CONNECT\", and only use the latter for the Capsule Protocol.  This doesn't need to be accomplished via \"fallback\".  It could be a manual configuration step by the customer.\r\n\r\nThe main alternative I see would be to say that any backend server relying on unrecognized CPUT conversion MUST offer Extended CONNECT on H2 and H3.  If you think that's a better approach, I'm happy to change this text.",
           "createdAt": "2024-10-29T13:08:52Z",
           "updatedAt": "2024-10-29T21:19:33Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "body": "Closing in favor of #4",
+          "createdAt": "2024-10-31T02:09:19Z",
+          "updatedAt": "2024-10-31T02:09:19Z"
         }
       ],
       "reviews": []
@@ -132,21 +139,21 @@
       "id": "PR_kwDONFykoM6ATBfj",
       "title": "Move Extended CONNECT requirement to origin servers",
       "url": "https://github.com/bemasc/capsule-conversion/pull/3",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "bemasc",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Alternative to #2",
       "createdAt": "2024-10-29T21:02:10Z",
-      "updatedAt": "2024-10-30T13:16:38Z",
+      "updatedAt": "2024-10-31T02:09:11Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "c50994dfb9edb0fe3a35e76009b5e252c9ff5426",
       "headRepository": "bemasc/capsule-conversion",
       "headRefName": "bemasc-ext-connect",
       "headRefOid": "06db8d14058bb28ee01a202dde011b026d61fbaa",
-      "closedAt": null,
+      "closedAt": "2024-10-31T02:09:10Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
@@ -157,6 +164,13 @@
           "body": "@kazuho Please review",
           "createdAt": "2024-10-29T21:19:04Z",
           "updatedAt": "2024-10-29T21:19:04Z"
+        },
+        {
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "body": "Closing in favor of #4",
+          "createdAt": "2024-10-31T02:09:10Z",
+          "updatedAt": "2024-10-31T02:09:10Z"
         }
       ],
       "reviews": [
@@ -207,24 +221,26 @@
       "id": "PR_kwDONFykoM6AYkfa",
       "title": "Move discussion of partially broken origins to the Implications",
       "url": "https://github.com/bemasc/capsule-conversion/pull/4",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "Alternative to #2, #3",
       "createdAt": "2024-10-30T13:15:06Z",
-      "updatedAt": "2024-10-31T01:10:24Z",
+      "updatedAt": "2024-10-31T02:08:47Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "c50994dfb9edb0fe3a35e76009b5e252c9ff5426",
       "headRepository": "bemasc/capsule-conversion",
       "headRefName": "bemasc-remove-ext-conect",
       "headRefOid": "3b1fce0d85cfc0e97ef3c90cd80a15d40ae9b87f",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2024-10-31T02:08:46Z",
+      "mergedAt": "2024-10-31T02:08:46Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "91371b6b1f069e8eec0e8b799fff70ff9cddac66"
+      },
       "comments": [],
       "reviews": [
         {
