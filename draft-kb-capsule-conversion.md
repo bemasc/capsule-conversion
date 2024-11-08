@@ -72,14 +72,17 @@ A Convertible Upgrade Request is a request that meets these criteria:
 
 * The HTTP version is "1.1".
 * The method is "GET".
-* The Upgrade header is present and specifies exactly one Upgrade Token.
-* A "Capsule-Protocol" header is present with an item value of "?1" (with or without parameters).
+* An "Upgrade" header is present and specifies exactly one Upgrade Token.
+* The request is known to use the Capsule Protocol, because:
+   - A "Capsule-Protocol" header is present with an item value of "?1" (with or without parameters), OR
+   - The intermediary knows that this Upgrade Token always uses the Capsule Protocol.
 * The request is otherwise well-formed for use with the Capsule Protocol.
 
 Upon receiving a Convertible Upgrade Request, an HTTP intermediary MAY convert it into an Extended CONNECT request ({{!RFC9220}}{{!RFC8441}}) using ordinary HTTP version translation with the following modifications:
 
 * Change the method to "CONNECT".
 * Add a ":protocol" pseudo-header containing the specified Upgrade Token.
+* Add a "capsule-protocol: ?1" header if no "Capsule-Protocol" header is present.
 
 (Note that ordinary HTTP version translation removes the "Connection" and "Upgrade" headers.)
 
@@ -98,7 +101,9 @@ If the intermediary receives any other valid response, it MUST NOT convert it to
 A Convertible Extended CONNECT request is a request that meets these criteria:
 
 * The method is "CONNECT".
-* A "capsule-protocol" header is present with an item value of "?1" (with or without parameters).
+* The request is known to use the Capsule Protocol, because:
+   - A "capsule-protocol" header is present with an item value of "?1" (with or without parameters), OR
+   - The intermediary knows that this Upgrade Token always uses the Capsule Protocol.
 * The request is otherwise well-formed for use with the Capsule Protocol.
 
 Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary MAY convert it into an HTTP/1.1 Upgrade request according to ordinary HTTP version translation, with the following modifications:
@@ -106,6 +111,7 @@ Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary MAY 
 * Change the method to "GET".
 * Add an "Upgrade" header containing the specified Upgrade Token.
 * Add a "Connection: Upgrade" header.
+* Add a "Capsule-Protocol: ?1" header if no "capsule-protocol" header is present.
 
 If the intermediary receives a correctly formed "101 (Switching Protocols)" response, it MUST change the response code to "200 (OK)".  If it receives a 2xx (Successful) response, it SHOULD return a "501 (Not Implemented)" status code, to indicate that the ":protocol" value was not accepted ({{!RFC9220, Section 3}}). Otherwise, it MUST forward any valid responses unmodified.  After sending a "200" response, the intermediary MUST process all further data to and from the server in accordance with the Capsule Protocol.
 
@@ -118,10 +124,12 @@ An HTTP intermediary MAY translate a Convertible Extended CONNECT Request betwee
 Translation of unrecognized CPUTs across HTTP versions carries some implications for future specifications related to the Capsule Protocol:
 
 * All CPUTs must treat "GET" in HTTP/1.1 as semantically equivalent to Extended CONNECT.
-* The "Capsule-Protocol" response header has no effect and should be treated as a hint for later analysis.  Intermediaries can process the response as the Capsule Protocol based entirely on the request header and the response status code.
+* The "Capsule-Protocol" response header has no effect and should be treated as a hint for later analysis.  Intermediaries can process the response as the Capsule Protocol based entirely on the request headers and the response status code.
 * Intermediaries' behavior regarding each capsule type is independent of the CPUT.  CPUTs cannot change intermediaries' treatment of existing capsule types.
 * A Capsule Type or CPUT cannot change the meaning of an HTTP extension.  It can only rely on the behaviors that are defined as mandatory for any implementation of that extension.  Extensions intended for use with the Capsule Protocol will likely need to define how HTTP version translation works.
 * Capsule Protocol endpoints are defined independently of the HTTP version, like ordinary HTTP resources.  If an origin server's Capsule Protocol support varies between HTTP versions, clients may observe inconsistent behavior when accessing the origin through a compliant intermediary.
+* If a future CPUT specification intends for all clients to be compatible with HTTP version translation by pre-existing intermediaries under this specification, it will have to make the "Capsule-Protocol: ?1" request header mandatory, as permitted by {{!RFC9297, Section 3.4}}.
+* A "Capsule-Protocol: ?0" request header cannot be used to disable HTTP version translation.
 
 All existing CPUTs and Capsule Types already conform to these rules.
 
