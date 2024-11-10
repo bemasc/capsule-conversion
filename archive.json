@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-07T01:37:36.549373+00:00",
+  "timestamp": "2024-11-10T01:42:36.218354+00:00",
   "repo": "bemasc/capsule-conversion",
   "labels": [
     {
@@ -255,6 +255,66 @@
           "createdAt": "2024-10-31T01:10:24Z",
           "updatedAt": "2024-10-31T01:10:24Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "PR_kwDONFykoM6BYGEW",
+      "title": "Support recognized CPUTs as well",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/5",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "This change adds support for version translation of known CPUTs, even if the Capsule-Protocol request header is omitted.",
+      "createdAt": "2024-11-08T22:41:36Z",
+      "updatedAt": "2024-11-09T11:41:09Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "91371b6b1f069e8eec0e8b799fff70ff9cddac66",
+      "headRepository": "bemasc/capsule-conversion",
+      "headRefName": "bemasc-backcompat",
+      "headRefOid": "f38d78e94cea7efd533b5c46e7b790ef13b5cb03",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDONFykoM6Qjxu-",
+          "commit": {
+            "abbreviatedOid": "f38d78e"
+          },
+          "author": "kazuho",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Thank you for writing this down (including the details that we need to cover). Everything LGTM.",
+          "createdAt": "2024-11-09T11:41:00Z",
+          "updatedAt": "2024-11-09T11:41:00Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDONFykoM6QjxtT",
+          "commit": {
+            "abbreviatedOid": "f38d78e"
+          },
+          "author": "DavidSchinazi",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2024-11-09T11:40:24Z",
+          "updatedAt": "2024-11-09T11:41:09Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "In addition to requiring the method to be CONNECT, should we also require the presence of a `:protocol` pseudo-header? I know the case of unextended CONNECT with `Capsule-Protocol = ?1` is invalid, but might as well be precise about the need for extended CONNECT.",
+              "createdAt": "2024-11-09T11:40:24Z",
+              "updatedAt": "2024-11-09T11:41:09Z"
+            }
+          ]
         }
       ]
     }
