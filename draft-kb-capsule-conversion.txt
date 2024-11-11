@@ -5,8 +5,8 @@
 Network Working Group                                     B. M. Schwartz
 Internet-Draft                                      Meta Platforms, Inc.
 Intended status: Standards Track                        奥 一穂 (K. Oku)
-Expires: 4 May 2025                                               Fastly
-                                                         31 October 2024
+Expires: 15 May 2025                                              Fastly
+                                                        11 November 2024
 
 
             HTTP Version Translation of the Capsule Protocol
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 4 May 2025.
+   This Internet-Draft will expire on 15 May 2025.
 
 Copyright Notice
 
@@ -144,11 +144,16 @@ Table of Contents
 
    *  The method is "GET".
 
-   *  The Upgrade header is present and specifies exactly one Upgrade
+   *  An "Upgrade" header is present and specifies exactly one Upgrade
       Token.
 
-   *  A "Capsule-Protocol" header is present with an item value of "?1"
-      (with or without parameters).
+   *  The request is known to use the Capsule Protocol, because:
+
+      -  A "Capsule-Protocol" header is present with an item value of
+         "?1" (with or without parameters), OR
+
+      -  The intermediary knows that this Upgrade Token always uses the
+         Capsule Protocol.
 
    *  The request is otherwise well-formed for use with the Capsule
       Protocol.
@@ -162,6 +167,9 @@ Table of Contents
 
    *  Add a ":protocol" pseudo-header containing the specified Upgrade
       Token.
+
+   *  Add a "capsule-protocol: ?1" header if no "Capsule-Protocol"
+      header is present.
 
    (Note that ordinary HTTP version translation removes the "Connection"
    and "Upgrade" headers.)
@@ -191,8 +199,16 @@ Table of Contents
 
    *  The method is "CONNECT".
 
-   *  A "capsule-protocol" header is present with an item value of "?1"
-      (with or without parameters).
+   *  The ":protocol" pseudo-header is present, providing an Upgrade
+      Token.
+
+   *  The request is known to use the Capsule Protocol, because:
+
+      -  A "capsule-protocol" header is present with an item value of
+         "?1" (with or without parameters), OR
+
+      -  The intermediary recognizes the provided Upgrade Token and
+         knows that it always uses the Capsule Protocol.
 
    *  The request is otherwise well-formed for use with the Capsule
       Protocol.
@@ -204,9 +220,13 @@ Table of Contents
 
    *  Change the method to "GET".
 
-   *  Add an "Upgrade" header containing the specified Upgrade Token.
+   *  Replace the ":protocol" pseudo-header with an "Upgrade" header
+      containing the same Upgrade Token.
 
    *  Add a "Connection: Upgrade" header.
+
+   *  Add a "Capsule-Protocol: ?1" header if no "capsule-protocol"
+      header is present.
 
    If the intermediary receives a correctly formed "101 (Switching
    Protocols)" response, it MUST change the response code to "200 (OK)".
@@ -236,7 +256,7 @@ Table of Contents
    *  The "Capsule-Protocol" response header has no effect and should be
       treated as a hint for later analysis.  Intermediaries can process
       the response as the Capsule Protocol based entirely on the request
-      header and the response status code.
+      headers and the response status code.
 
    *  Intermediaries' behavior regarding each capsule type is
       independent of the CPUT.  CPUTs cannot change intermediaries'
@@ -253,6 +273,15 @@ Table of Contents
       Capsule Protocol support varies between HTTP versions, clients may
       observe inconsistent behavior when accessing the origin through a
       compliant intermediary.
+
+   *  If a future CPUT specification intends for all clients to be
+      compatible with HTTP version translation by pre-existing
+      intermediaries under this specification, it will have to make the
+      "Capsule-Protocol: ?1" request header mandatory, as permitted by
+      [RFC9297], Section 3.4.
+
+   *  A "Capsule-Protocol: ?0" request header cannot be used to disable
+      HTTP version translation.
 
    All existing CPUTs and Capsule Types already conform to these rules.
 
