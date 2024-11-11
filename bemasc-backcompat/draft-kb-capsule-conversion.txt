@@ -5,8 +5,8 @@
 Network Working Group                                     B. M. Schwartz
 Internet-Draft                                      Meta Platforms, Inc.
 Intended status: Standards Track                        奥 一穂 (K. Oku)
-Expires: 12 May 2025                                              Fastly
-                                                         8 November 2024
+Expires: 15 May 2025                                              Fastly
+                                                        11 November 2024
 
 
             HTTP Version Translation of the Capsule Protocol
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 May 2025.
+   This Internet-Draft will expire on 15 May 2025.
 
 Copyright Notice
 
@@ -199,13 +199,16 @@ Table of Contents
 
    *  The method is "CONNECT".
 
+   *  The ":protocol" pseudo-header is present, providing an Upgrade
+      Token.
+
    *  The request is known to use the Capsule Protocol, because:
 
       -  A "capsule-protocol" header is present with an item value of
          "?1" (with or without parameters), OR
 
-      -  The intermediary knows that this Upgrade Token always uses the
-         Capsule Protocol.
+      -  The intermediary recognizes the provided Upgrade Token and
+         knows that it always uses the Capsule Protocol.
 
    *  The request is otherwise well-formed for use with the Capsule
       Protocol.
@@ -217,7 +220,8 @@ Table of Contents
 
    *  Change the method to "GET".
 
-   *  Add an "Upgrade" header containing the specified Upgrade Token.
+   *  Replace the ":protocol" pseudo-header with an "Upgrade" header
+      containing the same Upgrade Token.
 
    *  Add a "Connection: Upgrade" header.
 
