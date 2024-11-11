@@ -101,15 +101,16 @@ If the intermediary receives any other valid response, it MUST NOT convert it to
 A Convertible Extended CONNECT request is a request that meets these criteria:
 
 * The method is "CONNECT".
+* The ":protocol" pseudo-header is present, providing an Upgrade Token.
 * The request is known to use the Capsule Protocol, because:
    - A "capsule-protocol" header is present with an item value of "?1" (with or without parameters), OR
-   - The intermediary knows that this Upgrade Token always uses the Capsule Protocol.
+   - The intermediary recognizes the provided Upgrade Token and knows that it always uses the Capsule Protocol.
 * The request is otherwise well-formed for use with the Capsule Protocol.
 
 Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary MAY convert it into an HTTP/1.1 Upgrade request according to ordinary HTTP version translation, with the following modifications:
 
 * Change the method to "GET".
-* Add an "Upgrade" header containing the specified Upgrade Token.
+* Replace the ":protocol" pseudo-header with an "Upgrade" header containing the same Upgrade Token.
 * Add a "Connection: Upgrade" header.
 * Add a "Capsule-Protocol: ?1" header if no "capsule-protocol" header is present.
 
