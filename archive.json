@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-11-10T01:42:36.218354+00:00",
+  "timestamp": "2024-11-12T01:36:47.560267+00:00",
   "repo": "bemasc/capsule-conversion",
   "labels": [
     {
@@ -263,24 +263,26 @@
       "id": "PR_kwDONFykoM6BYGEW",
       "title": "Support recognized CPUTs as well",
       "url": "https://github.com/bemasc/capsule-conversion/pull/5",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "bemasc",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "This change adds support for version translation of known CPUTs, even if the Capsule-Protocol request header is omitted.",
       "createdAt": "2024-11-08T22:41:36Z",
-      "updatedAt": "2024-11-09T11:41:09Z",
+      "updatedAt": "2024-11-11T15:07:36Z",
       "baseRepository": "bemasc/capsule-conversion",
       "baseRefName": "main",
       "baseRefOid": "91371b6b1f069e8eec0e8b799fff70ff9cddac66",
       "headRepository": "bemasc/capsule-conversion",
       "headRefName": "bemasc-backcompat",
-      "headRefOid": "f38d78e94cea7efd533b5c46e7b790ef13b5cb03",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "f431937e4bae5381750770e4dead396d6e3b8fa4",
+      "closedAt": "2024-11-11T15:07:33Z",
+      "mergedAt": "2024-11-11T15:07:33Z",
+      "mergedBy": "bemasc",
+      "mergeCommit": {
+        "oid": "0aaa310f20ded96377b74ea579b81ae724b065a7"
+      },
       "comments": [],
       "reviews": [
         {
@@ -313,6 +315,26 @@
               "body": "In addition to requiring the method to be CONNECT, should we also require the presence of a `:protocol` pseudo-header? I know the case of unextended CONNECT with `Capsule-Protocol = ?1` is invalid, but might as well be precise about the need for extended CONNECT.",
               "createdAt": "2024-11-09T11:40:24Z",
               "updatedAt": "2024-11-09T11:41:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDONFykoM6QsTxh",
+          "commit": {
+            "abbreviatedOid": "f38d78e"
+          },
+          "author": "bemasc",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2024-11-11T15:07:24Z",
+          "updatedAt": "2024-11-11T15:07:24Z",
+          "comments": [
+            {
+              "originalPosition": 25,
+              "body": "OK, done",
+              "createdAt": "2024-11-11T15:07:24Z",
+              "updatedAt": "2024-11-11T15:07:24Z"
             }
           ]
         }
