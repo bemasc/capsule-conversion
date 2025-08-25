@@ -252,8 +252,7 @@ Table of Contents
       -  The intermediary recognizes this Upgrade Token as trivially
          convertible.
 
-   *  The request is otherwise well-formed for use with the Capsule
-      Protocol.
+   *  The request is otherwise well-formed.
 
    Upon receiving a Convertible Extended CONNECT Request, an HTTP
    intermediary MAY convert it into an HTTP/1.1 Upgrade request
