@@ -266,7 +266,7 @@ Table of Contents
 
    *  Add a "Connection: Upgrade" header.
 
-   Intermediaries MAY add a "Capsule-Protocol" request header and a
+   Intermediaries MAY add a "Capsule-Protocol" request header and/or a
    "convertible" parameter if one or both are missing.
 
    If the intermediary receives a correctly formed "101 (Switching

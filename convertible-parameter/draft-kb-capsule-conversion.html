@@ -1411,7 +1411,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
             <p id="section-4.2-4.3.1">Add a "Connection: Upgrade" header.<a href="#section-4.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-4.2-5">Intermediaries <span class="bcp14">MAY</span> add a "Capsule-Protocol" request header and a "convertible" parameter if one or both are missing.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">Intermediaries <span class="bcp14">MAY</span> add a "Capsule-Protocol" request header and/or a "convertible" parameter if one or both are missing.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
 <p id="section-4.2-6">If the intermediary receives a correctly formed "101 (Switching Protocols)" response, it <span class="bcp14">MUST</span> change the response code to "200 (OK)".  If it receives a 2xx (Successful) response, it <span class="bcp14">SHOULD</span> return a "501 (Not Implemented)" status code, to indicate that the ":protocol" value was not accepted (<span>[<a href="#RFC9220" class="cite xref">RFC9220</a>], <a href="https://rfc-editor.org/rfc/rfc9220#section-3" class="relref">Section 3</a></span>). Otherwise, it <span class="bcp14">MUST</span> forward any valid responses unmodified.  After sending a "200" response, the intermediary <span class="bcp14">MUST</span> process all further data to and from the server in accordance with the Capsule Protocol.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
