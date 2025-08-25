@@ -5,8 +5,8 @@
 Network Working Group                                     B. M. Schwartz
 Internet-Draft                                      Meta Platforms, Inc.
 Intended status: Standards Track                        奥 一穂 (K. Oku)
-Expires: 1 January 2026                                           Fastly
-                                                            30 June 2025
+Expires: 26 February 2026                                         Fastly
+                                                          25 August 2025
 
 
             HTTP Version Translation of the Capsule Protocol
@@ -14,8 +14,8 @@ Expires: 1 January 2026                                           Fastly
 
 Abstract
 
-   This draft specifies how HTTP intermediaries can translate the
-   Capsule Protocol between HTTP versions.
+   This draft specifies how to mark Capsule Protocol requests so that
+   HTTP intermediaries can translate them between HTTP versions.
 
 About This Document
 
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 1 January 2026.
+   This Internet-Draft will expire on 26 February 2026.
 
 Copyright Notice
 
@@ -62,12 +62,13 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Requirements
-     3.1.  Converting an HTTP/1.1 Upgrade request to Extended CONNECT
-     3.2.  Converting an Extended CONNECT request to HTTP/1.1 Upgrade
-     3.3.  Converting an Extended CONNECT request to Extended CONNECT
+   3.  New Parameter: "convertible"
+     3.1.  Existing Convertible Upgrade Tokens
+   4.  Requirements for Intermediaries
+     4.1.  Converting an HTTP/1.1 Upgrade request to Extended CONNECT
+     4.2.  Converting an Extended CONNECT request to HTTP/1.1 Upgrade
+     4.3.  Converting an Extended CONNECT request to Extended CONNECT
            for a different HTTP version
-   4.  Implications
    5.  Security Considerations
    6.  IANA Considerations
    7.  References
@@ -78,7 +79,7 @@ Table of Contents
 
 1.  Introduction
 
-   The Capsule Protocol [RFC9297] defines a framing layer that can be
+   The Capsule Protocol [CAPSULE] defines a framing layer that can be
    used for protocols running over HTTP.  The Capsule Protocol consists
    of a linear stream of capsules, each with a specified type and size.
    Endpoints can establish a Capsule Protocol connection using HTTP
@@ -94,7 +95,7 @@ Table of Contents
    The Capsule Protocol is defined for HTTP/1.1, HTTP/2, and HTTP/3, and
    intermediaries can translate Capsule Protocol streams between
    different versions of HTTP.  For example, an HTTP Gateway receiving a
-   request using the "connect-tcp-capsule" Upgrade Token
+   request using the "connect-tcp" Upgrade Token
    [I-D.ietf-httpbis-connect-tcp] over HTTP/3 might forward it to a
    backend server using HTTP/1.1 for further processing.  However, this
    translation currently requires the intermediary to recognize the
@@ -119,9 +120,10 @@ Table of Contents
    This increases the maintenance burden on intermediaries and impedes
    the deployment of novel CPUTs.
 
-   This draft specifies general rules for translating Capsule Protocol
-   requests across HTTP versions, allowing intermediaries to perform
-   such translations for unrecognized CPUTs.
+   This draft defines a new parameter for marking Capsule Protocol
+   requests as safe to convert between HTTP versions, allowing
+   intermediaries to perform such translations for unrecognized upgrade
+   tokens.
 
 2.  Conventions and Definitions
 
@@ -131,12 +133,53 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-3.  Requirements
+3.  New Parameter: "convertible"
+
+   This specification defines a new Boolean parameter for the "Capsule-
+   Protocol" header field, with the name "convertible".  A value of
+   Boolean true indicates that the upgrade token is trivially
+   convertible between HTTP versions.  An upgrade token is trivially
+   convertible if the upgraded protocol can safely be converted between
+   HTTP versions without any modifications beyond those required by the
+   Capsule Protocol [CAPSULE].
+
+   The "convertible" parameter MAY appear on request header fields with
+   a true or false Boolean item value.  If the "Capsule-Protocol" item
+   value is Boolean false, and the "convertible" parameter value is
+   Boolean true, this indicates that the upgrade token is trivially
+   convertible between HTTP versions even though it does not comply with
+   the Capsule Protocol.
+
+   The "convertible" parameter MUST NOT appear in response header
+   fields.
+
+3.1.  Existing Convertible Upgrade Tokens
+
+   The following pre-existing upgrade tokens are trivially convertible:
+
+   *  "connect-udp" [CONNECT-UDP]
+
+   *  "connect-ip" [CONNECT-IP]
+
+   *  "connect-tcp" [CONNECT-TCP]
+
+   The WebSocket protocol [RFC6455][RFC8441] is not trivially
+   convertible due to version-specific requirements for the "Sec-
+   WebSocket-Key" and "Sec-WebSocket-Accept" header fields.
+
+      TODO: Comment on WebTransport, pending the result of
+      https://github.com/ietf-wg-webtrans/draft-ietf-webtrans-http3/
+      issues/218
+
+   Future upgrade token definitions should indicate whether they are
+   trivially convertible.
+
+4.  Requirements for Intermediaries
 
    This section describes requirements on HTTP intermediaries that
    change the HTTP version of a Capsule Protocol request.
 
-3.1.  Converting an HTTP/1.1 Upgrade request to Extended CONNECT
+4.1.  Converting an HTTP/1.1 Upgrade request to Extended CONNECT
 
    A Convertible Upgrade Request is a request that meets these criteria:
 
@@ -144,19 +187,18 @@ Table of Contents
 
    *  The method is "GET".
 
-   *  An "Upgrade" header is present and specifies exactly one Upgrade
-      Token.
+   *  An "Upgrade" header field is present and specifies exactly one
+      Upgrade Token.
 
-   *  The request is known to use the Capsule Protocol, because:
+   *  The upgrade token is known to be trivially convertible, because:
 
-      -  A "Capsule-Protocol" header is present with an item value of
-         "?1" (with or without parameters), OR
+      -  A "Capsule-Protocol" header field is present with a Boolean
+         true "convertible" parameter, OR
 
-      -  The intermediary knows that this Upgrade Token always uses the
-         Capsule Protocol.
+      -  The intermediary recognizes this Upgrade Token as trivially
+         convertible.
 
-   *  The request is otherwise well-formed for use with the Capsule
-      Protocol.
+   *  The request is otherwise well-formed.
 
    Upon receiving a Convertible Upgrade Request, an HTTP intermediary
    MAY convert it into an Extended CONNECT request ([RFC9220][RFC8441])
@@ -168,11 +210,11 @@ Table of Contents
    *  Add a ":protocol" pseudo-header containing the specified Upgrade
       Token.
 
-   *  Add a "capsule-protocol: ?1" header if no "Capsule-Protocol"
-      header is present.
-
    (Note that ordinary HTTP version translation removes the "Connection"
    and "Upgrade" headers.)
+
+   Intermediaries MAY add a "capsule-protocol" request header and/or a
+   "convertible" parameter if one or both are missing.
 
    If the intermediary receives a "200 (OK)" response, it MUST convert
    it to an HTTP/1.1 Upgrade response as follows:
@@ -192,7 +234,7 @@ Table of Contents
    1xx (Informational), the intermediary MAY accept additional HTTP/1.1
    requests on this connection to the client.
 
-3.2.  Converting an Extended CONNECT request to HTTP/1.1 Upgrade
+4.2.  Converting an Extended CONNECT request to HTTP/1.1 Upgrade
 
    A Convertible Extended CONNECT request is a request that meets these
    criteria:
@@ -202,13 +244,13 @@ Table of Contents
    *  The ":protocol" pseudo-header is present, providing an Upgrade
       Token.
 
-   *  The request is known to use the Capsule Protocol, because:
+   *  The upgrade token is known to be trivially convertible, because
 
-      -  A "capsule-protocol" header is present with an item value of
-         "?1" (with or without parameters), OR
+      -  A "capsule-protocol" header field is present with a Boolean
+         true "convertible" parameter, OR
 
-      -  The intermediary recognizes the provided Upgrade Token and
-         knows that it always uses the Capsule Protocol.
+      -  The intermediary recognizes this Upgrade Token as trivially
+         convertible.
 
    *  The request is otherwise well-formed for use with the Capsule
       Protocol.
@@ -221,12 +263,12 @@ Table of Contents
    *  Change the method to "GET".
 
    *  Replace the ":protocol" pseudo-header with an "Upgrade" header
-      containing the same Upgrade Token.
+      field containing the same Upgrade Token.
 
    *  Add a "Connection: Upgrade" header.
 
-   *  Add a "Capsule-Protocol: ?1" header if no "capsule-protocol"
-      header is present.
+   Intermediaries MAY add a "Capsule-Protocol" request header and a
+   "convertible" parameter if one or both are missing.
 
    If the intermediary receives a correctly formed "101 (Switching
    Protocols)" response, it MUST change the response code to "200 (OK)".
@@ -237,53 +279,12 @@ Table of Contents
    response, the intermediary MUST process all further data to and from
    the server in accordance with the Capsule Protocol.
 
-3.3.  Converting an Extended CONNECT request to Extended CONNECT for a
+4.3.  Converting an Extended CONNECT request to Extended CONNECT for a
       different HTTP version
 
    An HTTP intermediary MAY translate a Convertible Extended CONNECT
    Request between different HTTP versions using ordinary HTTP version
    translation.
-
-4.  Implications
-
-   Translation of unrecognized CPUTs across HTTP versions carries some
-   implications for future specifications related to the Capsule
-   Protocol:
-
-   *  All CPUTs must treat "GET" in HTTP/1.1 as semantically equivalent
-      to Extended CONNECT.
-
-   *  The "Capsule-Protocol" response header has no effect and should be
-      treated as a hint for later analysis.  Intermediaries can process
-      the response as the Capsule Protocol based entirely on the request
-      headers and the response status code.
-
-   *  Intermediaries' behavior regarding each capsule type is
-      independent of the CPUT.  CPUTs cannot change intermediaries'
-      treatment of existing capsule types.
-
-   *  A Capsule Type or CPUT cannot change the meaning of an HTTP
-      extension.  It can only rely on the behaviors that are defined as
-      mandatory for any implementation of that extension.  Extensions
-      intended for use with the Capsule Protocol will likely need to
-      define how HTTP version translation works.
-
-   *  Capsule Protocol endpoints are defined independently of the HTTP
-      version, like ordinary HTTP resources.  If an origin server's
-      Capsule Protocol support varies between HTTP versions, clients may
-      observe inconsistent behavior when accessing the origin through a
-      compliant intermediary.
-
-   *  If a future CPUT specification intends for all clients to be
-      compatible with HTTP version translation by pre-existing
-      intermediaries under this specification, it will have to make the
-      "Capsule-Protocol: ?1" request header mandatory, as permitted by
-      [RFC9297], Section 3.4.
-
-   *  A "Capsule-Protocol: ?0" request header cannot be used to disable
-      HTTP version translation.
-
-   All existing CPUTs and Capsule Types already conform to these rules.
 
 5.  Security Considerations
 
@@ -304,6 +305,10 @@ Table of Contents
 
 7.1.  Normative References
 
+   [CAPSULE]  Schinazi, D. and L. Pardue, "HTTP Datagrams and the
+              Capsule Protocol", RFC 9297, DOI 10.17487/RFC9297, August
+              2022, <https://www.rfc-editor.org/rfc/rfc9297>.
+
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -321,25 +326,43 @@ Table of Contents
               RFC 9220, DOI 10.17487/RFC9220, June 2022,
               <https://www.rfc-editor.org/rfc/rfc9220>.
 
-   [RFC9297]  Schinazi, D. and L. Pardue, "HTTP Datagrams and the
-              Capsule Protocol", RFC 9297, DOI 10.17487/RFC9297, August
-              2022, <https://www.rfc-editor.org/rfc/rfc9297>.
-
 7.2.  Informative References
+
+   [CONNECT-IP]
+              Pauly, T., Ed., Schinazi, D., Chernyakhovsky, A.,
+              Kühlewind, M., and M. Westerlund, "Proxying IP in HTTP",
+              RFC 9484, DOI 10.17487/RFC9484, October 2023,
+              <https://www.rfc-editor.org/rfc/rfc9484>.
+
+   [CONNECT-TCP]
+              Schwartz, B. M., "Template-Driven HTTP CONNECT Proxying
+              for TCP", Work in Progress, Internet-Draft, draft-ietf-
+              httpbis-connect-tcp-09, 30 June 2025,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
+              connect-tcp-09>.
+
+   [CONNECT-UDP]
+              Schinazi, D., "Proxying UDP in HTTP", RFC 9298,
+              DOI 10.17487/RFC9298, August 2022,
+              <https://www.rfc-editor.org/rfc/rfc9298>.
 
    [I-D.ietf-httpbis-connect-tcp]
               Schwartz, B. M., "Template-Driven HTTP CONNECT Proxying
               for TCP", Work in Progress, Internet-Draft, draft-ietf-
-              httpbis-connect-tcp-08, 11 June 2025,
+              httpbis-connect-tcp-09, 30 June 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-
-              connect-tcp-08>.
+              connect-tcp-09>.
 
    [I-D.ietf-httpbis-optimistic-upgrade]
               Schwartz, B. M., "Security Considerations for Optimistic
               Protocol Transitions in HTTP/1.1", Work in Progress,
-              Internet-Draft, draft-ietf-httpbis-optimistic-upgrade-04,
-              11 June 2025, <https://datatracker.ietf.org/doc/html/
-              draft-ietf-httpbis-optimistic-upgrade-04>.
+              Internet-Draft, draft-ietf-httpbis-optimistic-upgrade-05,
+              20 August 2025, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-httpbis-optimistic-upgrade-05>.
+
+   [RFC6455]  Fette, I. and A. Melnikov, "The WebSocket Protocol",
+              RFC 6455, DOI 10.17487/RFC6455, December 2011,
+              <https://www.rfc-editor.org/rfc/rfc6455>.
 
 Acknowledgments
 

@@ -8,12 +8,12 @@
 <meta content="Benjamin M. Schwartz" name="author">
 <meta content="奥 一穂 (Kazuho Oku)" name="author">
 <meta content="
-       This draft specifies how HTTP intermediaries can translate the Capsule Protocol between HTTP versions. 
+       This draft specifies how to mark Capsule Protocol requests so that HTTP intermediaries can translate them between HTTP versions. 
     " name="description">
-<meta content="xml2rfc 3.29.0" name="generator">
+<meta content="xml2rfc 3.30.0" name="generator">
 <meta content="draft-kb-capsule-conversion-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.29.0
+  xml2rfc 3.30.0
     Python 3.12.11
     ConfigArgParse 1.7
     google-i18n-address 3.1.1
@@ -1044,11 +1044,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Capsule Translation</td>
-<td class="right">June 2025</td>
+<td class="right">August 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Schwartz &amp; Oku</td>
-<td class="center">Expires 1 January 2026</td>
+<td class="center">Expires 26 February 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1061,12 +1061,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-kb-capsule-conversion-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-06-30" class="published">30 June 2025</time>
+<time datetime="2025-08-25" class="published">25 August 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-01-01">1 January 2026</time></dd>
+<dd class="expires"><time datetime="2026-02-26">26 February 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,7 +1084,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">HTTP Version Translation of the Capsule Protocol</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This draft specifies how HTTP intermediaries can translate the Capsule Protocol between HTTP versions.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This draft specifies how to mark Capsule Protocol requests so that HTTP intermediaries can translate them between HTTP versions.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1115,7 +1115,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 1 January 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 26 February 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1151,21 +1151,26 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-requirements" class="internal xref">Requirements</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-new-parameter-convertible" class="internal xref">New Parameter: "convertible"</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-converting-an-http-11-upgra" class="internal xref">Converting an HTTP/1.1 Upgrade request to Extended CONNECT</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="auto internal xref">3.2</a>.  <a href="#name-converting-an-extended-conn" class="internal xref">Converting an Extended CONNECT request to HTTP/1.1 Upgrade</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
-                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="auto internal xref">3.3</a>.  <a href="#name-converting-an-extended-conne" class="internal xref">Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version</a></p>
+                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="auto internal xref">3.1</a>.  <a href="#name-existing-convertible-upgrad" class="internal xref">Existing Convertible Upgrade Tokens</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-implications" class="internal xref">Implications</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-requirements-for-intermedia" class="internal xref">Requirements for Intermediaries</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-converting-an-http-11-upgra" class="internal xref">Converting an HTTP/1.1 Upgrade request to Extended CONNECT</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-converting-an-extended-conn" class="internal xref">Converting an Extended CONNECT request to HTTP/1.1 Upgrade</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-converting-an-extended-conne" class="internal xref">Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1199,9 +1204,9 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">The Capsule Protocol <span>[<a href="#RFC9297" class="cite xref">RFC9297</a>]</span> defines a framing layer that can be used for protocols running over HTTP.  The Capsule Protocol consists of a linear stream of capsules, each with a specified type and size.  Endpoints can establish a Capsule Protocol connection using HTTP Extended CONNECT or the HTTP/1.1 Upgrade process.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">The Capsule Protocol <span>[<a href="#CAPSULE" class="cite xref">CAPSULE</a>]</span> defines a framing layer that can be used for protocols running over HTTP.  The Capsule Protocol consists of a linear stream of capsules, each with a specified type and size.  Endpoints can establish a Capsule Protocol connection using HTTP Extended CONNECT or the HTTP/1.1 Upgrade process.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Intermediaries such as HTTP Gateways can play an active role in the Capsule Protocol.  To inform intermediaries that this protocol is in use, endpoints can include a "Capsule-Protocol: ?1" header in their request or response.  Intermediaries are obligated to pass unrecognized capsule types unmodified, but some capsule types do permit intermediaries to modify them.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">The Capsule Protocol is defined for HTTP/1.1, HTTP/2, and HTTP/3, and intermediaries can translate Capsule Protocol streams between different versions of HTTP.  For example, an HTTP Gateway receiving a request using the "connect-tcp-capsule" Upgrade Token <span>[<a href="#I-D.ietf-httpbis-connect-tcp" class="cite xref">I-D.ietf-httpbis-connect-tcp</a>]</span> over HTTP/3 might forward it to a backend server using HTTP/1.1 for further processing.  However, this translation currently requires the intermediary to recognize the specified Upgrade Token.  Unrecognized Upgrade Tokens cannot be translated between HTTP versions.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">The Capsule Protocol is defined for HTTP/1.1, HTTP/2, and HTTP/3, and intermediaries can translate Capsule Protocol streams between different versions of HTTP.  For example, an HTTP Gateway receiving a request using the "connect-tcp" Upgrade Token <span>[<a href="#I-D.ietf-httpbis-connect-tcp" class="cite xref">I-D.ietf-httpbis-connect-tcp</a>]</span> over HTTP/3 might forward it to a backend server using HTTP/1.1 for further processing.  However, this translation currently requires the intermediary to recognize the specified Upgrade Token.  Unrecognized Upgrade Tokens cannot be translated between HTTP versions.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <span id="name-http-version-translation-of"></span><figure id="figure-1">
         <div id="section-1-4.1">
           <div class="alignLeft art-svg artwork" id="section-1-4.1.1">
@@ -1252,7 +1257,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <a href="#name-http-version-translation-of" class="selfRef">HTTP version translation of an Upgrade Token.  The gateway can only perform this translation if it recognizes the "foo" Upgrade Token.</a>
         </figcaption></figure>
 <p id="section-1-5">As a result of this limitation, HTTP intermediaries cannot forward unrecognized Capsule Protocol Upgrade Tokens (CPUTs) unless the backend supports the HTTP version used by the client.  In practice, such HTTP version mismatches are common, so intermediaries have preferred not to support unrecognized tokens at all.  As a result, each new CPUT requires the cooperation of any HTTP intermediaries.  This increases the maintenance burden on intermediaries and impedes the deployment of novel CPUTs.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">This draft specifies general rules for translating Capsule Protocol requests across HTTP versions, allowing intermediaries to perform such translations for unrecognized CPUTs.<a href="#section-1-6" class="pilcrow">¶</a></p>
+<p id="section-1-6">This draft defines a new parameter for marking Capsule Protocol requests as safe to convert between HTTP versions, allowing intermediaries to perform such translations for unrecognized upgrade tokens.<a href="#section-1-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1266,158 +1271,158 @@ described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</s
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="requirements">
+<div id="new-parameter-convertible">
 <section id="section-3">
-      <h2 id="name-requirements">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-requirements" class="section-name selfRef">Requirements</a>
+      <h2 id="name-new-parameter-convertible">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-new-parameter-convertible" class="section-name selfRef">New Parameter: "convertible"</a>
       </h2>
-<p id="section-3-1">This section describes requirements on HTTP intermediaries that change the HTTP version of a Capsule Protocol request.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<div id="converting-an-http11-upgrade-request-to-extended-connect">
+<p id="section-3-1">This specification defines a new Boolean parameter for the "Capsule-Protocol" header field, with the name "convertible".  A value of Boolean true indicates that the upgrade token is trivially convertible between HTTP versions.  An upgrade token is trivially convertible if the upgraded protocol can safely be converted between HTTP versions without any modifications beyond those required by the Capsule Protocol <span>[<a href="#CAPSULE" class="cite xref">CAPSULE</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">The "convertible" parameter <span class="bcp14">MAY</span> appear on request header fields with a true or false Boolean item value.  If the "Capsule-Protocol" item value is Boolean false, and the "convertible" parameter value is Boolean true, this indicates that the upgrade token is trivially convertible between HTTP versions even though it does not comply with the Capsule Protocol.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">The "convertible" parameter <span class="bcp14">MUST NOT</span> appear in response header fields.<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div id="existing-convertible-upgrade-tokens">
 <section id="section-3.1">
-        <h3 id="name-converting-an-http-11-upgra">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-converting-an-http-11-upgra" class="section-name selfRef">Converting an HTTP/1.1 Upgrade request to Extended CONNECT</a>
+        <h3 id="name-existing-convertible-upgrad">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-existing-convertible-upgrad" class="section-name selfRef">Existing Convertible Upgrade Tokens</a>
         </h3>
-<p id="section-3.1-1">A Convertible Upgrade Request is a request that meets these criteria:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">The following pre-existing upgrade tokens are trivially convertible:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-3.1-2.1">
-            <p id="section-3.1-2.1.1">The HTTP version is "1.1".<a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-2.1.1">"connect-udp" <span>[<a href="#CONNECT-UDP" class="cite xref">CONNECT-UDP</a>]</span><a href="#section-3.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.2">
-            <p id="section-3.1-2.2.1">The method is "GET".<a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-2.2.1">"connect-ip" <span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span><a href="#section-3.1-2.2.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-3.1-2.3">
-            <p id="section-3.1-2.3.1">An "Upgrade" header is present and specifies exactly one Upgrade Token.<a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
+            <p id="section-3.1-2.3.1">"connect-tcp" <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span><a href="#section-3.1-2.3.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-2.4">
-            <p id="section-3.1-2.4.1">The request is known to use the Capsule Protocol, because:<a href="#section-3.1-2.4.1" class="pilcrow">¶</a></p>
+        </ul>
+<p id="section-3.1-3">The WebSocket protocol <span>[<a href="#RFC6455" class="cite xref">RFC6455</a>]</span><span>[<a href="#RFC8441" class="cite xref">RFC8441</a>]</span> is not trivially convertible due to version-specific requirements for the "Sec-WebSocket-Key" and "Sec-WebSocket-Accept" header fields.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-3.1-4.1">
+            <p id="section-3.1-4.1.1">TODO: Comment on WebTransport, pending the result of https://github.com/ietf-wg-webtrans/draft-ietf-webtrans-http3/issues/218<a href="#section-3.1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+<p id="section-3.1-5">Future upgrade token definitions should indicate whether they are trivially convertible.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="requirements-for-intermediaries">
+<section id="section-4">
+      <h2 id="name-requirements-for-intermedia">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-requirements-for-intermedia" class="section-name selfRef">Requirements for Intermediaries</a>
+      </h2>
+<p id="section-4-1">This section describes requirements on HTTP intermediaries that change the HTTP version of a Capsule Protocol request.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<div id="converting-an-http11-upgrade-request-to-extended-connect">
+<section id="section-4.1">
+        <h3 id="name-converting-an-http-11-upgra">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-converting-an-http-11-upgra" class="section-name selfRef">Converting an HTTP/1.1 Upgrade request to Extended CONNECT</a>
+        </h3>
+<p id="section-4.1-1">A Convertible Upgrade Request is a request that meets these criteria:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-2.4.2.1">
-                <p id="section-3.1-2.4.2.1.1">A "Capsule-Protocol" header is present with an item value of "?1" (with or without parameters), OR<a href="#section-3.1-2.4.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-2.1">
+            <p id="section-4.1-2.1.1">The HTTP version is "1.1".<a href="#section-4.1-2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.1-2.4.2.2">
-                <p id="section-3.1-2.4.2.2.1">The intermediary knows that this Upgrade Token always uses the Capsule Protocol.<a href="#section-3.1-2.4.2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-2.2">
+            <p id="section-4.1-2.2.1">The method is "GET".<a href="#section-4.1-2.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.1-2.3">
+            <p id="section-4.1-2.3.1">An "Upgrade" header field is present and specifies exactly one Upgrade Token.<a href="#section-4.1-2.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="normal" id="section-4.1-2.4">
+            <p id="section-4.1-2.4.1">The upgrade token is known to be trivially convertible, because:<a href="#section-4.1-2.4.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4.1-2.4.2.1">
+                <p id="section-4.1-2.4.2.1.1">A "Capsule-Protocol" header field is present with a Boolean true "convertible" parameter, OR<a href="#section-4.1-2.4.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="normal" id="section-4.1-2.4.2.2">
+                <p id="section-4.1-2.4.2.2.1">The intermediary recognizes this Upgrade Token as trivially convertible.<a href="#section-4.1-2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.1-2.5">
-            <p id="section-3.1-2.5.1">The request is otherwise well-formed for use with the Capsule Protocol.<a href="#section-3.1-2.5.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-2.5">
+            <p id="section-4.1-2.5.1">The request is otherwise well-formed.<a href="#section-4.1-2.5.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-3">Upon receiving a Convertible Upgrade Request, an HTTP intermediary <span class="bcp14">MAY</span> convert it into an Extended CONNECT request (<span>[<a href="#RFC9220" class="cite xref">RFC9220</a>]</span><span>[<a href="#RFC8441" class="cite xref">RFC8441</a>]</span>) using ordinary HTTP version translation with the following modifications:<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-3">Upon receiving a Convertible Upgrade Request, an HTTP intermediary <span class="bcp14">MAY</span> convert it into an Extended CONNECT request (<span>[<a href="#RFC9220" class="cite xref">RFC9220</a>]</span><span>[<a href="#RFC8441" class="cite xref">RFC8441</a>]</span>) using ordinary HTTP version translation with the following modifications:<a href="#section-4.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-4.1">
-            <p id="section-3.1-4.1.1">Change the method to "CONNECT".<a href="#section-3.1-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-4.1">
+            <p id="section-4.1-4.1.1">Change the method to "CONNECT".<a href="#section-4.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-4.2">
-            <p id="section-3.1-4.2.1">Add a ":protocol" pseudo-header containing the specified Upgrade Token.<a href="#section-3.1-4.2.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.1-4.3">
-            <p id="section-3.1-4.3.1">Add a "capsule-protocol: ?1" header if no "Capsule-Protocol" header is present.<a href="#section-3.1-4.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-4.2">
+            <p id="section-4.1-4.2.1">Add a ":protocol" pseudo-header containing the specified Upgrade Token.<a href="#section-4.1-4.2.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-5">(Note that ordinary HTTP version translation removes the "Connection" and "Upgrade" headers.)<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">If the intermediary receives a "200 (OK)" response, it <span class="bcp14">MUST</span> convert it to an HTTP/1.1 Upgrade response as follows:<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-5">(Note that ordinary HTTP version translation removes the "Connection" and "Upgrade" headers.)<a href="#section-4.1-5" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">Intermediaries <span class="bcp14">MAY</span> add a "capsule-protocol" request header and/or a "convertible" parameter if one or both are missing.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<p id="section-4.1-7">If the intermediary receives a "200 (OK)" response, it <span class="bcp14">MUST</span> convert it to an HTTP/1.1 Upgrade response as follows:<a href="#section-4.1-7" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.1-7.1">
-            <p id="section-3.1-7.1.1">Change the response code to "101 (Switching Protocols)".<a href="#section-3.1-7.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.1-8.1">
+            <p id="section-4.1-8.1.1">Change the response code to "101 (Switching Protocols)".<a href="#section-4.1-8.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-7.2">
-            <p id="section-3.1-7.2.1">Add an "Upgrade" header containing the specified Upgrade Token.<a href="#section-3.1-7.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-8.2">
+            <p id="section-4.1-8.2.1">Add an "Upgrade" header containing the specified Upgrade Token.<a href="#section-4.1-8.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.1-7.3">
-            <p id="section-3.1-7.3.1">Add a "Connection: Upgrade" header.<a href="#section-3.1-7.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.1-8.3">
+            <p id="section-4.1-8.3.1">Add a "Connection: Upgrade" header.<a href="#section-4.1-8.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.1-8">After sending this response, the intermediary <span class="bcp14">MUST</span> process all data to and from the client in accordance with the Capsule Protocol.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">If the intermediary receives any other valid response, it <span class="bcp14">MUST NOT</span> convert it to an HTTP/1.1 Upgrade response, and <span class="bcp14">MUST</span> forward it using ordinary HTTP version translation.  If the response status was not 1xx (Informational), the intermediary <span class="bcp14">MAY</span> accept additional HTTP/1.1 requests on this connection to the client.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-4.1-9">After sending this response, the intermediary <span class="bcp14">MUST</span> process all data to and from the client in accordance with the Capsule Protocol.<a href="#section-4.1-9" class="pilcrow">¶</a></p>
+<p id="section-4.1-10">If the intermediary receives any other valid response, it <span class="bcp14">MUST NOT</span> convert it to an HTTP/1.1 Upgrade response, and <span class="bcp14">MUST</span> forward it using ordinary HTTP version translation.  If the response status was not 1xx (Informational), the intermediary <span class="bcp14">MAY</span> accept additional HTTP/1.1 requests on this connection to the client.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="converting-an-extended-connect-request-to-http11-upgrade">
-<section id="section-3.2">
+<section id="section-4.2">
         <h3 id="name-converting-an-extended-conn">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-converting-an-extended-conn" class="section-name selfRef">Converting an Extended CONNECT request to HTTP/1.1 Upgrade</a>
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-converting-an-extended-conn" class="section-name selfRef">Converting an Extended CONNECT request to HTTP/1.1 Upgrade</a>
         </h3>
-<p id="section-3.2-1">A Convertible Extended CONNECT request is a request that meets these criteria:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">A Convertible Extended CONNECT request is a request that meets these criteria:<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-2.1">
-            <p id="section-3.2-2.1.1">The method is "CONNECT".<a href="#section-3.2-2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-2.1">
+            <p id="section-4.2-2.1.1">The method is "CONNECT".<a href="#section-4.2-2.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-2.2">
-            <p id="section-3.2-2.2.1">The ":protocol" pseudo-header is present, providing an Upgrade Token.<a href="#section-3.2-2.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-2.2">
+            <p id="section-4.2-2.2.1">The ":protocol" pseudo-header is present, providing an Upgrade Token.<a href="#section-4.2-2.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-2.3">
-            <p id="section-3.2-2.3.1">The request is known to use the Capsule Protocol, because:<a href="#section-3.2-2.3.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-2.3">
+            <p id="section-4.2-2.3.1">The upgrade token is known to be trivially convertible, because<a href="#section-4.2-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-2.3.2.1">
-                <p id="section-3.2-2.3.2.1.1">A "capsule-protocol" header is present with an item value of "?1" (with or without parameters), OR<a href="#section-3.2-2.3.2.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-2.3.2.1">
+                <p id="section-4.2-2.3.2.1.1">A "capsule-protocol" header field is present with a Boolean true "convertible" parameter, OR<a href="#section-4.2-2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="normal" id="section-3.2-2.3.2.2">
-                <p id="section-3.2-2.3.2.2.1">The intermediary recognizes the provided Upgrade Token and knows that it always uses the Capsule Protocol.<a href="#section-3.2-2.3.2.2.1" class="pilcrow">¶</a></p>
+              <li class="normal" id="section-4.2-2.3.2.2">
+                <p id="section-4.2-2.3.2.2.1">The intermediary recognizes this Upgrade Token as trivially convertible.<a href="#section-4.2-2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
-          <li class="normal" id="section-3.2-2.4">
-            <p id="section-3.2-2.4.1">The request is otherwise well-formed for use with the Capsule Protocol.<a href="#section-3.2-2.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-2.4">
+            <p id="section-4.2-2.4.1">The request is otherwise well-formed for use with the Capsule Protocol.<a href="#section-4.2-2.4.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-3">Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary <span class="bcp14">MAY</span> convert it into an HTTP/1.1 Upgrade request according to ordinary HTTP version translation, with the following modifications:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<p id="section-4.2-3">Upon receiving a Convertible Extended CONNECT Request, an HTTP intermediary <span class="bcp14">MAY</span> convert it into an HTTP/1.1 Upgrade request according to ordinary HTTP version translation, with the following modifications:<a href="#section-4.2-3" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-4.1">
-            <p id="section-3.2-4.1.1">Change the method to "GET".<a href="#section-3.2-4.1.1" class="pilcrow">¶</a></p>
+<li class="normal" id="section-4.2-4.1">
+            <p id="section-4.2-4.1.1">Change the method to "GET".<a href="#section-4.2-4.1.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-4.2">
-            <p id="section-3.2-4.2.1">Replace the ":protocol" pseudo-header with an "Upgrade" header containing the same Upgrade Token.<a href="#section-3.2-4.2.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-4.2">
+            <p id="section-4.2-4.2.1">Replace the ":protocol" pseudo-header with an "Upgrade" header field containing the same Upgrade Token.<a href="#section-4.2-4.2.1" class="pilcrow">¶</a></p>
 </li>
-          <li class="normal" id="section-3.2-4.3">
-            <p id="section-3.2-4.3.1">Add a "Connection: Upgrade" header.<a href="#section-3.2-4.3.1" class="pilcrow">¶</a></p>
-</li>
-          <li class="normal" id="section-3.2-4.4">
-            <p id="section-3.2-4.4.1">Add a "Capsule-Protocol: ?1" header if no "capsule-protocol" header is present.<a href="#section-3.2-4.4.1" class="pilcrow">¶</a></p>
+          <li class="normal" id="section-4.2-4.3">
+            <p id="section-4.2-4.3.1">Add a "Connection: Upgrade" header.<a href="#section-4.2-4.3.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
-<p id="section-3.2-5">If the intermediary receives a correctly formed "101 (Switching Protocols)" response, it <span class="bcp14">MUST</span> change the response code to "200 (OK)".  If it receives a 2xx (Successful) response, it <span class="bcp14">SHOULD</span> return a "501 (Not Implemented)" status code, to indicate that the ":protocol" value was not accepted (<span>[<a href="#RFC9220" class="cite xref">RFC9220</a>], <a href="https://rfc-editor.org/rfc/rfc9220#section-3" class="relref">Section 3</a></span>). Otherwise, it <span class="bcp14">MUST</span> forward any valid responses unmodified.  After sending a "200" response, the intermediary <span class="bcp14">MUST</span> process all further data to and from the server in accordance with the Capsule Protocol.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-5">Intermediaries <span class="bcp14">MAY</span> add a "Capsule-Protocol" request header and a "convertible" parameter if one or both are missing.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">If the intermediary receives a correctly formed "101 (Switching Protocols)" response, it <span class="bcp14">MUST</span> change the response code to "200 (OK)".  If it receives a 2xx (Successful) response, it <span class="bcp14">SHOULD</span> return a "501 (Not Implemented)" status code, to indicate that the ":protocol" value was not accepted (<span>[<a href="#RFC9220" class="cite xref">RFC9220</a>], <a href="https://rfc-editor.org/rfc/rfc9220#section-3" class="relref">Section 3</a></span>). Otherwise, it <span class="bcp14">MUST</span> forward any valid responses unmodified.  After sending a "200" response, the intermediary <span class="bcp14">MUST</span> process all further data to and from the server in accordance with the Capsule Protocol.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="converting-an-extended-connect-request-to-extended-connect-for-a-different-http-version">
-<section id="section-3.3">
+<section id="section-4.3">
         <h3 id="name-converting-an-extended-conne">
-<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-converting-an-extended-conne" class="section-name selfRef">Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version</a>
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-converting-an-extended-conne" class="section-name selfRef">Converting an Extended CONNECT request to Extended CONNECT for a different HTTP version</a>
         </h3>
-<p id="section-3.3-1">An HTTP intermediary <span class="bcp14">MAY</span> translate a Convertible Extended CONNECT Request between different HTTP versions using ordinary HTTP version translation.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-1">An HTTP intermediary <span class="bcp14">MAY</span> translate a Convertible Extended CONNECT Request between different HTTP versions using ordinary HTTP version translation.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-</section>
-</div>
-<div id="implications">
-<section id="section-4">
-      <h2 id="name-implications">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-implications" class="section-name selfRef">Implications</a>
-      </h2>
-<p id="section-4-1">Translation of unrecognized CPUTs across HTTP versions carries some implications for future specifications related to the Capsule Protocol:<a href="#section-4-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4-2.1">
-          <p id="section-4-2.1.1">All CPUTs must treat "GET" in HTTP/1.1 as semantically equivalent to Extended CONNECT.<a href="#section-4-2.1.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.2">
-          <p id="section-4-2.2.1">The "Capsule-Protocol" response header has no effect and should be treated as a hint for later analysis.  Intermediaries can process the response as the Capsule Protocol based entirely on the request headers and the response status code.<a href="#section-4-2.2.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.3">
-          <p id="section-4-2.3.1">Intermediaries' behavior regarding each capsule type is independent of the CPUT.  CPUTs cannot change intermediaries' treatment of existing capsule types.<a href="#section-4-2.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.4">
-          <p id="section-4-2.4.1">A Capsule Type or CPUT cannot change the meaning of an HTTP extension.  It can only rely on the behaviors that are defined as mandatory for any implementation of that extension.  Extensions intended for use with the Capsule Protocol will likely need to define how HTTP version translation works.<a href="#section-4-2.4.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.5">
-          <p id="section-4-2.5.1">Capsule Protocol endpoints are defined independently of the HTTP version, like ordinary HTTP resources.  If an origin server's Capsule Protocol support varies between HTTP versions, clients may observe inconsistent behavior when accessing the origin through a compliant intermediary.<a href="#section-4-2.5.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.6">
-          <p id="section-4-2.6.1">If a future CPUT specification intends for all clients to be compatible with HTTP version translation by pre-existing intermediaries under this specification, it will have to make the "Capsule-Protocol: ?1" request header mandatory, as permitted by <span>[<a href="#RFC9297" class="cite xref">RFC9297</a>], <a href="https://rfc-editor.org/rfc/rfc9297#section-3.4" class="relref">Section 3.4</a></span>.<a href="#section-4-2.6.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-4-2.7">
-          <p id="section-4-2.7.1">A "Capsule-Protocol: ?0" request header cannot be used to disable HTTP version translation.<a href="#section-4-2.7.1" class="pilcrow">¶</a></p>
-</li>
-      </ul>
-<p id="section-4-3">All existing CPUTs and Capsule Types already conform to these rules.<a href="#section-4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1448,6 +1453,10 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
+<dt id="CAPSULE">[CAPSULE]</dt>
+        <dd>
+<span class="refAuthor">Schinazi, D.</span> and <span class="refAuthor">L. Pardue</span>, <span class="refTitle">"HTTP Datagrams and the Capsule Protocol"</span>, <span class="seriesInfo">RFC 9297</span>, <span class="seriesInfo">DOI 10.17487/RFC9297</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9297">https://www.rfc-editor.org/rfc/rfc9297</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
@@ -1461,12 +1470,8 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <span class="refAuthor">McManus, P.</span>, <span class="refTitle">"Bootstrapping WebSockets with HTTP/2"</span>, <span class="seriesInfo">RFC 8441</span>, <span class="seriesInfo">DOI 10.17487/RFC8441</span>, <time datetime="2018-09" class="refDate">September 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8441">https://www.rfc-editor.org/rfc/rfc8441</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC9220">[RFC9220]</dt>
-        <dd>
-<span class="refAuthor">Hamilton, R.</span>, <span class="refTitle">"Bootstrapping WebSockets with HTTP/3"</span>, <span class="seriesInfo">RFC 9220</span>, <span class="seriesInfo">DOI 10.17487/RFC9220</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9220">https://www.rfc-editor.org/rfc/rfc9220</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC9297">[RFC9297]</dt>
       <dd>
-<span class="refAuthor">Schinazi, D.</span> and <span class="refAuthor">L. Pardue</span>, <span class="refTitle">"HTTP Datagrams and the Capsule Protocol"</span>, <span class="seriesInfo">RFC 9297</span>, <span class="seriesInfo">DOI 10.17487/RFC9297</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9297">https://www.rfc-editor.org/rfc/rfc9297</a>&gt;</span>. </dd>
+<span class="refAuthor">Hamilton, R.</span>, <span class="refTitle">"Bootstrapping WebSockets with HTTP/3"</span>, <span class="seriesInfo">RFC 9220</span>, <span class="seriesInfo">DOI 10.17487/RFC9220</span>, <time datetime="2022-06" class="refDate">June 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9220">https://www.rfc-editor.org/rfc/rfc9220</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
@@ -1477,13 +1482,29 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="CONNECT-IP">[CONNECT-IP]</dt>
+        <dd>
+<span class="refAuthor">Pauly, T., Ed.</span>, <span class="refAuthor">Schinazi, D.</span>, <span class="refAuthor">Chernyakhovsky, A.</span>, <span class="refAuthor">Kühlewind, M.</span>, and <span class="refAuthor">M. Westerlund</span>, <span class="refTitle">"Proxying IP in HTTP"</span>, <span class="seriesInfo">RFC 9484</span>, <span class="seriesInfo">DOI 10.17487/RFC9484</span>, <time datetime="2023-10" class="refDate">October 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9484">https://www.rfc-editor.org/rfc/rfc9484</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CONNECT-TCP">[CONNECT-TCP]</dt>
+        <dd>
+<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Template-Driven HTTP CONNECT Proxying for TCP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-connect-tcp-09</span>, <time datetime="2025-06-30" class="refDate">30 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-09">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-09</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CONNECT-UDP">[CONNECT-UDP]</dt>
+        <dd>
+<span class="refAuthor">Schinazi, D.</span>, <span class="refTitle">"Proxying UDP in HTTP"</span>, <span class="seriesInfo">RFC 9298</span>, <span class="seriesInfo">DOI 10.17487/RFC9298</span>, <time datetime="2022-08" class="refDate">August 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9298">https://www.rfc-editor.org/rfc/rfc9298</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-httpbis-connect-tcp">[I-D.ietf-httpbis-connect-tcp]</dt>
         <dd>
-<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Template-Driven HTTP CONNECT Proxying for TCP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-connect-tcp-08</span>, <time datetime="2025-06-11" class="refDate">11 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-08">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-08</a>&gt;</span>. </dd>
+<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Template-Driven HTTP CONNECT Proxying for TCP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-connect-tcp-09</span>, <time datetime="2025-06-30" class="refDate">30 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-09">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-09</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-httpbis-optimistic-upgrade">[I-D.ietf-httpbis-optimistic-upgrade]</dt>
+        <dd>
+<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Security Considerations for Optimistic Protocol Transitions in HTTP/1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-optimistic-upgrade-05</span>, <time datetime="2025-08-20" class="refDate">20 August 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-optimistic-upgrade-05">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-optimistic-upgrade-05</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6455">[RFC6455]</dt>
       <dd>
-<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Security Considerations for Optimistic Protocol Transitions in HTTP/1.1"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-optimistic-upgrade-04</span>, <time datetime="2025-06-11" class="refDate">11 June 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-optimistic-upgrade-04">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-optimistic-upgrade-04</a>&gt;</span>. </dd>
+<span class="refAuthor">Fette, I.</span> and <span class="refAuthor">A. Melnikov</span>, <span class="refTitle">"The WebSocket Protocol"</span>, <span class="seriesInfo">RFC 6455</span>, <span class="seriesInfo">DOI 10.17487/RFC6455</span>, <time datetime="2011-12" class="refDate">December 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6455">https://www.rfc-editor.org/rfc/rfc6455</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
