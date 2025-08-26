@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-08-24T02:02:43.214283+00:00",
+  "timestamp": "2025-08-26T01:52:58.311385+00:00",
   "repo": "bemasc/capsule-conversion",
   "labels": [
     {
@@ -339,6 +339,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 6,
+      "id": "PR_kwDONFykoM6lOLZv",
+      "title": "Make convertibility explicit using a new boolean parameter",
+      "url": "https://github.com/bemasc/capsule-conversion/pull/6",
+      "state": "OPEN",
+      "author": "bemasc",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-08-25T14:01:19Z",
+      "updatedAt": "2025-08-25T14:01:19Z",
+      "baseRepository": "bemasc/capsule-conversion",
+      "baseRefName": "main",
+      "baseRefOid": "0aaa310f20ded96377b74ea579b81ae724b065a7",
+      "headRepository": "bemasc/capsule-conversion",
+      "headRefName": "convertible-parameter",
+      "headRefOid": "732ac8f1c0c84a8a519415b14890c1bd3eeaceb8",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
